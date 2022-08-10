@@ -68,7 +68,9 @@ class NestedSelectInput < ActiveAdminAddons::InputBase
     parent_attribute = level_data[:parent_attribute]
     build_virtual_attr(parent_attribute)
     instance = instance_from_attribute_name(level_data[:attribute])
-    if instance&.respond_to?(parent_attribute)
+    if @object&.respond_to?(parent_attribute) && @object.send(parent_attribute).present?
+      # do nothing
+    elsif instance&.respond_to?(parent_attribute)
       @object.send("#{parent_attribute}=", instance.send(parent_attribute))
     end
   end
